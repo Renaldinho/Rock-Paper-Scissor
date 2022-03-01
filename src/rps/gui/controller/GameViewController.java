@@ -49,6 +49,7 @@ public class GameViewController implements Initializable {
     private Player human;
     private Player bot;
     private Utility utility;
+    HBox rockBox = new HBox();
     VBox vBox ;
 
     public GameViewController(){
@@ -60,42 +61,42 @@ public class GameViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-
         HBox scissorBox= new HBox();
+        HBox questionMark= new HBox();
         HBox paperBox = new HBox();
-        HBox rockBox = new HBox();
-        HBox hbox= new HBox();
 
-        vBox = new VBox(5);
-        HBox.setHgrow(vBox, Priority.ALWAYS);
+        vBox = new VBox();
+
         utility=new Utility();
         /**
          * resized images
          */
         try {
-            utility.resize("/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/white_gap.png","/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/white_gap_resized.png",38,5);
+            utility.resize("/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/scissorSiLamin.png","/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/resizedScissor.png",38,60);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        anchorPane.getChildren().add(hbox);
 
-        hbox.setLayoutX(165);
-        hbox.setLayoutY(146);
+        vBox.setLayoutX(165);
+        vBox.setLayoutY(96);
 
 
         //HBox.setHgrow(vBox, Priority.ALWAYS);
-
-        hbox.getChildren().add(vBox);
-
-        anchorPane.getChildren().add(new ImageView(new Image("slot_machine_resized.png")));
+        anchorPane.getChildren().add(vBox);
+        ImageView imageView = new ImageView(new Image("slot_machine_resized.png"));
+        imageView.setLayoutX(85);
+        imageView.setLayoutY(0);
+        anchorPane.getChildren().add(imageView );
 
 
 
         for (int j =1;j<=3;j++) {
+                questionMark.getChildren().add(new ImageView(new Image("question_mark_resized.png")));
                 scissorBox.getChildren().add(new ImageView(new Image("resizedScissor.png")));
                 paperBox.getChildren().add(new ImageView(new Image("paperResized.png")));
                 rockBox.getChildren().add(new ImageView(new Image("rockResized.png")));
             }
+
             vBox.getChildren().add(scissorBox);
             //vBox.getChildren().add(new ImageView(new Image("white_gap_resized.png")));
              //vBox.getChildren().add(new ImageView(new Image("white_gap_resized.png")));
@@ -106,7 +107,10 @@ public class GameViewController implements Initializable {
         //vBox.getChildren().add(new ImageView(new Image("white_gap_resized.png")));
 
             vBox.getChildren().add(rockBox);
-            hbox.setMaxHeight(5);
+        vBox.getChildren().add(questionMark);
+        vBox.setLayoutX(250);
+        vBox.setLayoutY(95);
+
 
 
         rockImage.setImage(new Image("rock.png"));
@@ -114,40 +118,28 @@ public class GameViewController implements Initializable {
         scissorImage.setImage(new Image("scissor.png"));
 
 
+
     }
 
     @FXML
     private void handlePaper(MouseEvent mouseEvent) {
-        TranslateTransition tt = new TranslateTransition();
-        tt.setDuration(Duration.seconds(2));
-        tt.setNode(vBox);
-        tt.setToY(100);
-        tt.play();
         handlePlayRound(Move.Paper);
     }
 
     @FXML
     private void handleRock(MouseEvent mouseEvent) {
-        TranslateTransition tt = new TranslateTransition();
-        tt.setDuration(Duration.seconds(2));
-        tt.setNode(vBox);
-        tt.setToY(100);
-        tt.play();
         handlePlayRound(Move.Rock);
     }
 
     @FXML
     private void handleScissors(MouseEvent mouseEvent) {
-        TranslateTransition tt = new TranslateTransition();
-        tt.setDuration(Duration.seconds(2));
-        tt.setNode(vBox);
-        tt.setToY(100);
-        tt.play();
+
         handlePlayRound(Move.Scissor);
     }
 
     private void handlePlayRound(Move playerMove) {
         Result result = gameManager.playRound(playerMove);
+
 
         updateGameState(result);
     }
@@ -159,6 +151,46 @@ public class GameViewController implements Initializable {
                 new Image(result.getLoserMove().getImageURL()) :
                 new Image(result.getWinnerMove().getImageURL());
         botMovieImage.setImage(botImage);
+
+        Move botMove = (result.getLoserPlayer().getPlayerType()==PlayerType.AI) ?
+                result.getLoserMove() :
+                result.getWinnerMove();
+
+        TranslateTransition tt = new TranslateTransition();
+        tt.setDuration(Duration.seconds(0.5));
+        tt.setNode(vBox);
+        tt.setToY(180);
+        tt.autoReverseProperty().set(true);
+        tt.setCycleCount(2);
+        tt.play();
+
+        switch (botMove){
+            case Rock -> {
+                TranslateTransition ttr = new TranslateTransition();
+                ttr.setDuration(Duration.seconds(0.5));
+                ttr.setNode(vBox);
+                ttr.setToY(60);
+                ttr.play();
+                System.out.println("Rock");
+            }
+            case Scissor -> {
+                TranslateTransition ttr = new TranslateTransition();
+                ttr.setDuration(Duration.seconds(0.5));
+                ttr.setNode(vBox);
+                ttr.setToY(180);
+                ttr.play();
+                System.out.println("Scissor");
+            }
+            case Paper -> {
+                TranslateTransition ttr = new TranslateTransition();
+                ttr.setDuration(Duration.seconds(0.5));
+                ttr.setNode(vBox);
+                ttr.setToY(120);
+                ttr.play();
+                System.out.println("Paper");
+            }
+        }
+
 
         if (result.getType()== ResultType.Tie)
             tieScore.setText(String.valueOf(Integer.valueOf(tieScore.getText())+1));

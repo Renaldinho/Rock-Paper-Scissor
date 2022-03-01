@@ -1,6 +1,5 @@
 package rps.bll.game;
 
-import java.awt.*;
 
 /**
  * The various move options in the game
@@ -12,7 +11,7 @@ public enum Move {
     Paper("paper.png"),
     Scissor("scissor.png");
 
-    String imageURL;
+    final String imageURL;
     Move(String imageURL){
         this.imageURL = imageURL;
     }
