@@ -160,12 +160,12 @@ public class GameViewController implements Initializable {
         tt.setDuration(Duration.seconds(0.5));
         tt.setNode(vBox);
         tt.setToY(180);
-        tt.autoReverseProperty().set(true);
-        tt.setCycleCount(2);
+        tt.play();
+        tt.setToY(-180);
         tt.play();
 
-        switch (botMove){
-            case Rock -> {
+        if(botMove.equals(Move.Rock))
+            {
                 TranslateTransition ttr = new TranslateTransition();
                 ttr.setDuration(Duration.seconds(0.5));
                 ttr.setNode(vBox);
@@ -173,7 +173,8 @@ public class GameViewController implements Initializable {
                 ttr.play();
                 System.out.println("Rock");
             }
-            case Scissor -> {
+            else if (botMove.equals(Move.Scissor))
+            {
                 TranslateTransition ttr = new TranslateTransition();
                 ttr.setDuration(Duration.seconds(0.5));
                 ttr.setNode(vBox);
@@ -181,7 +182,7 @@ public class GameViewController implements Initializable {
                 ttr.play();
                 System.out.println("Scissor");
             }
-            case Paper -> {
+            else  {
                 TranslateTransition ttr = new TranslateTransition();
                 ttr.setDuration(Duration.seconds(0.5));
                 ttr.setNode(vBox);
@@ -189,7 +190,6 @@ public class GameViewController implements Initializable {
                 ttr.play();
                 System.out.println("Paper");
             }
-        }
 
 
         if (result.getType()== ResultType.Tie)
