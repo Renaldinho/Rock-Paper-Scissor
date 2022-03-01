@@ -69,9 +69,11 @@ public class GameViewController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        anchorPane.getChildren().add(new ImageView(new Image("slot_machine_resized.png")));
         anchorPane.getChildren().add(vBox);
 
-            for (int j =1;j<=3;j++) {
+
+        for (int j =1;j<=3;j++) {
                 scissorBox.getChildren().add(new ImageView(new Image("resizedScissor.png")));
                 paperBox.getChildren().add(new ImageView(new Image("paperResized.png")));
                 rockBox.getChildren().add(new ImageView(new Image("rockResized.png")));
@@ -79,7 +81,8 @@ public class GameViewController implements Initializable {
             vBox.getChildren().add(scissorBox);
             vBox.getChildren().add(paperBox);
             vBox.getChildren().add(rockBox);
-            anchorPane.getChildren().add(new ImageView(new Image("slot_machine_resized.png")));
+            vBox.setLayoutX(160);
+            vBox.setLayoutY(275);
 
 
         rockImage.setImage(new Image("rock.png"));
