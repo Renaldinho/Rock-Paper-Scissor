@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.image.*;
 
 import javafx.animation.TranslateTransition;
+import javafx.beans.Observable;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import rps.bll.Utility;
@@ -56,20 +59,34 @@ public class GameViewController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+
         HBox scissorBox= new HBox();
         HBox paperBox = new HBox();
         HBox rockBox = new HBox();
-        vBox = new VBox();
+        HBox hbox= new HBox();
+
+        vBox = new VBox(5);
+        HBox.setHgrow(vBox, Priority.ALWAYS);
         utility=new Utility();
         /**
          * resized images
          */
         try {
-            utility.resize("/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/slot_machine_png.png","/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/slot_machine_resized.png",450,450);
+            utility.resize("/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/white_gap.png","/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/white_gap_resized.png",38,5);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        anchorPane.getChildren().add(vBox);
+        anchorPane.getChildren().add(hbox);
+
+        hbox.setLayoutX(165);
+        hbox.setLayoutY(146);
+
+
+        //HBox.setHgrow(vBox, Priority.ALWAYS);
+
+        hbox.getChildren().add(vBox);
+
         anchorPane.getChildren().add(new ImageView(new Image("slot_machine_resized.png")));
 
 
@@ -80,10 +97,16 @@ public class GameViewController implements Initializable {
                 rockBox.getChildren().add(new ImageView(new Image("rockResized.png")));
             }
             vBox.getChildren().add(scissorBox);
-            vBox.getChildren().add(paperBox);
+            //vBox.getChildren().add(new ImageView(new Image("white_gap_resized.png")));
+             //vBox.getChildren().add(new ImageView(new Image("white_gap_resized.png")));
+
+        vBox.getChildren().add(paperBox);
+        //vBox.getChildren().add(new ImageView(new Image("white_gap_resized.png")));
+
+        //vBox.getChildren().add(new ImageView(new Image("white_gap_resized.png")));
+
             vBox.getChildren().add(rockBox);
-            vBox.setLayoutX(160);
-            vBox.setLayoutY(170);
+            hbox.setMaxHeight(5);
 
 
         rockImage.setImage(new Image("rock.png"));
