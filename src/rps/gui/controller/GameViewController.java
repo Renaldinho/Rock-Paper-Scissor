@@ -65,12 +65,13 @@ public class GameViewController implements Initializable {
          * resized images
          */
         try {
-            utility.resize("/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/slot_machine.png","/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/slot_machine_resized.png",450,450);
+            utility.resize("/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/slot_machine_png.png","/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/slot_machine_resized.png",450,450);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        anchorPane.getChildren().add(new ImageView(new Image("slot_machine_resized.png")));
         anchorPane.getChildren().add(vBox);
+        anchorPane.getChildren().add(new ImageView(new Image("slot_machine_resized.png")));
+
 
 
         for (int j =1;j<=3;j++) {
@@ -82,7 +83,7 @@ public class GameViewController implements Initializable {
             vBox.getChildren().add(paperBox);
             vBox.getChildren().add(rockBox);
             vBox.setLayoutX(160);
-            vBox.setLayoutY(275);
+            vBox.setLayoutY(170);
 
 
         rockImage.setImage(new Image("rock.png"));
@@ -104,11 +105,21 @@ public class GameViewController implements Initializable {
 
     @FXML
     private void handleRock(MouseEvent mouseEvent) {
+        TranslateTransition tt = new TranslateTransition();
+        tt.setDuration(Duration.seconds(2));
+        tt.setNode(vBox);
+        tt.setToY(100);
+        tt.play();
         handlePlayRound(Move.Rock);
     }
 
     @FXML
     private void handleScissors(MouseEvent mouseEvent) {
+        TranslateTransition tt = new TranslateTransition();
+        tt.setDuration(Duration.seconds(2));
+        tt.setNode(vBox);
+        tt.setToY(100);
+        tt.play();
         handlePlayRound(Move.Scissor);
     }
 
