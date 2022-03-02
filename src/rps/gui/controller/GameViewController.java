@@ -2,13 +2,8 @@ package rps.gui.controller;
 
 // Java imports
 
-import java.awt.*;
-import java.awt.image.*;
-
 import javafx.animation.TranslateTransition;
-import javafx.beans.Observable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,9 +17,6 @@ import rps.bll.game.*;
 import rps.bll.player.Player;
 import rps.bll.player.PlayerType;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -70,7 +62,7 @@ public class GameViewController implements Initializable {
          * resized images
          */
         try {
-            utility.resize("/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/sizebiground.png","/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/partBackground.png",40,300);
+            utility.resize("/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/siLaminResized.png","/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/siLamin.png",89,210);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,7 +106,7 @@ public class GameViewController implements Initializable {
 
         //stackPane.layoutXProperty().set(100);
 
-        ImageView imageView0 = new ImageView(new Image("siLamin.jpeg"));
+        ImageView imageView0 = new ImageView(new Image("siLamin.png"));
 
         stackPane.getChildren().add(imageView0);
         stackPane.setAlignment(imageView0,Pos.BOTTOM_CENTER);
@@ -163,11 +155,6 @@ public class GameViewController implements Initializable {
 
     private void updateGameState(Result result) {
         roundLabel.setText(String.valueOf(result.getRoundNumber()));
-
-        Image botImage = (result.getLoserPlayer().getPlayerType()==PlayerType.AI) ?
-                new Image(result.getLoserMove().getImageURL()) :
-                new Image(result.getWinnerMove().getImageURL());
-        botMovieImage.setImage(botImage);
 
         Move botMove = (result.getLoserPlayer().getPlayerType()==PlayerType.AI) ?
                 result.getLoserMove() :
