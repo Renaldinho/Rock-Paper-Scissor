@@ -7,6 +7,7 @@ import java.awt.image.*;
 
 import javafx.animation.TranslateTransition;
 import javafx.beans.Observable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.fxml.FXML;
@@ -14,10 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 import rps.bll.Utility;
 import rps.bll.game.*;
@@ -38,10 +36,10 @@ import java.util.ResourceBundle;
 public class GameViewController implements Initializable {
 
     public AnchorPane anchorPane;
+    public StackPane stackPane;
     @FXML
     private Label roundLabel,tieScore,botScore,humanScore;;
-    @FXML
-    private ImageView scissorImage,rockImage,paperImage;
+
     @FXML
     private ImageView botMovieImage;
 
@@ -72,7 +70,7 @@ public class GameViewController implements Initializable {
          * resized images
          */
         try {
-            utility.resize("/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/scissorSiLamin.png","/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/resizedScissor.png",38,60);
+            utility.resize("/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/sizebiground.png","/Users/aminaouina/Documents/GitHub/rps2022/Untitled/Resources/partBackground.png",40,300);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,11 +80,7 @@ public class GameViewController implements Initializable {
 
 
         //HBox.setHgrow(vBox, Priority.ALWAYS);
-        anchorPane.getChildren().add(vBox);
-        ImageView imageView = new ImageView(new Image("slot_machine_resized.png"));
-        imageView.setLayoutX(85);
-        imageView.setLayoutY(0);
-        anchorPane.getChildren().add(imageView );
+
 
 
 
@@ -107,15 +101,41 @@ public class GameViewController implements Initializable {
         //vBox.getChildren().add(new ImageView(new Image("white_gap_resized.png")));
 
             vBox.getChildren().add(rockBox);
+
+        ImageView imageView = new ImageView(new Image("backGround.png"));
+        imageView.fitHeightProperty().bind(anchorPane.heightProperty());
+        imageView.fitWidthProperty().bind(anchorPane.widthProperty());
+        imageView.setLayoutX(0);
+        imageView.setLayoutY(0);
+
+        anchorPane.getChildren().add(imageView );
         vBox.getChildren().add(questionMark);
-        vBox.setLayoutX(250);
-        vBox.setLayoutY(95);
+        stackPane.getChildren().add(vBox);
+
+        //stackPane.layoutXProperty().set(100);
+
+        ImageView imageView0 = new ImageView(new Image("siLamin.jpeg"));
+
+        stackPane.getChildren().add(imageView0);
+        stackPane.setAlignment(imageView0,Pos.BOTTOM_CENTER);
 
 
 
-        rockImage.setImage(new Image("rock.png"));
-        paperImage.setImage(new Image("paper.png"));
-        scissorImage.setImage(new Image("scissor.png"));
+
+        ImageView rockImage = new ImageView(new Image("rockResized.png"));
+        rockImage.setOnMouseClicked(event -> handlePlayRound(Move.Rock));
+        ImageView paperImage = new ImageView(new Image("paperResized.png"));
+        paperImage.setOnMouseClicked(event -> handlePlayRound(Move.Paper));
+        ImageView scissorImage = new ImageView(new Image("resizedScissor.png"));
+        scissorImage.setOnMouseClicked(event -> handlePlayRound(Move.Scissor));
+
+       anchorPane.getChildren().add(rockImage);
+       rockImage.setLayoutY(30);
+        anchorPane.getChildren().add(paperImage);
+        paperImage.setLayoutY(90);
+        anchorPane.getChildren().add(scissorImage);
+        scissorImage.setLayoutY(140);
+
 
 
 
@@ -123,18 +143,16 @@ public class GameViewController implements Initializable {
 
     @FXML
     private void handlePaper(MouseEvent mouseEvent) {
-        handlePlayRound(Move.Paper);
     }
 
     @FXML
     private void handleRock(MouseEvent mouseEvent) {
-        handlePlayRound(Move.Rock);
+
     }
 
     @FXML
     private void handleScissors(MouseEvent mouseEvent) {
 
-        handlePlayRound(Move.Scissor);
     }
 
     private void handlePlayRound(Move playerMove) {
