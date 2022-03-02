@@ -50,10 +50,10 @@ public class Player implements IPlayer {
     public Move doMove(IGameState state) {
         //Historic data to analyze and decide next move...
         ArrayList<Result> results = (ArrayList<Result>) state.getHistoricResults();
-        if (results.size()<2)
+        if (results.size()<5)
             return getRandomMove();
 
-        return MarkovChain.getNextOptimal();
+        return MarkovChain.getRandomProbable();
     }
 
     private Move getRandomMove() {

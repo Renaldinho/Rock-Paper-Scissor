@@ -104,7 +104,7 @@ public class GameViewTestController implements Initializable {
         else if (result.getWinnerPlayer().getPlayerType()==PlayerType.AI)
             botScore.setText(String.valueOf(Integer.valueOf(botScore.getText())+1));
         else
-            humanScore.setText(String.valueOf(Integer.valueOf(botScore.getText())+1));
+            humanScore.setText(String.valueOf(Integer.valueOf(humanScore.getText())+1));
     }
 
 }
