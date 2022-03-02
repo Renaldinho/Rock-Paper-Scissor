@@ -1,4 +1,4 @@
-package rps.gui;
+package rps;
 
 // Java imports
 import javafx.application.Application;

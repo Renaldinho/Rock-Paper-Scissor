@@ -140,7 +140,6 @@ public class GameViewController implements Initializable {
     private void handlePlayRound(Move playerMove) {
         Result result = gameManager.playRound(playerMove);
 
-
         updateGameState(result);
     }
 
@@ -171,7 +170,7 @@ public class GameViewController implements Initializable {
                 ttr.setNode(vBox);
                 ttr.setToY(60);
                 ttr.play();
-                System.out.println("Rock");
+                //System.out.println("Rock");
             }
             else if (botMove.equals(Move.Scissor))
             {
@@ -180,7 +179,7 @@ public class GameViewController implements Initializable {
                 ttr.setNode(vBox);
                 ttr.setToY(180);
                 ttr.play();
-                System.out.println("Scissor");
+                //System.out.println("Scissor");
             }
             else  {
                 TranslateTransition ttr = new TranslateTransition();
@@ -188,7 +187,7 @@ public class GameViewController implements Initializable {
                 ttr.setNode(vBox);
                 ttr.setToY(120);
                 ttr.play();
-                System.out.println("Paper");
+                //System.out.println("Paper");
             }
 
 

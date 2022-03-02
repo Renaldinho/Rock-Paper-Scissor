@@ -7,17 +7,30 @@ package rps.bll.game;
  * @author smsj
  */
 public enum Move {
-    Rock("rock.png"),
-    Paper("paper.png"),
-    Scissor("scissor.png");
+    Rock("rock.png",0),
+    Paper("paper.png",1),
+    Scissor("scissor.png",2);
 
     final String imageURL;
-    Move(String imageURL){
+    final int matrixIndex;
+    public Move losesTo;
+
+    Move(String imageURL,int matrixIndex){
         this.imageURL = imageURL;
+        this.matrixIndex = matrixIndex;
     }
 
     public String getImageURL(){
         return imageURL;
     }
 
+    public int getMatrixIndex() {
+        return matrixIndex;
+    }
+
+    static {
+        Rock.losesTo = Paper;
+        Paper.losesTo = Scissor;
+        Scissor.losesTo = Rock;
+    }
 }

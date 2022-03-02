@@ -2,6 +2,7 @@ package rps.bll.player;
 
 //Project imports
 import rps.bll.game.IGameState;
+import rps.bll.game.MarkovChain;
 import rps.bll.game.Move;
 import rps.bll.game.Result;
 
@@ -49,13 +50,14 @@ public class Player implements IPlayer {
     public Move doMove(IGameState state) {
         //Historic data to analyze and decide next move...
         ArrayList<Result> results = (ArrayList<Result>) state.getHistoricResults();
-        if (results.size()<10)
+        if (results.size()<2)
             return getRandomMove();
-        return Move.Rock;
+
+        return MarkovChain.getNextOptimal();
     }
 
     private Move getRandomMove() {
-        Move[] values = {Move.Paper,Move.Rock,Move.Scissor};
+        Move[] values = Move.values();
         int size = values.length;
         Random random = new Random();
 

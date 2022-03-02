@@ -15,6 +15,7 @@ public class Result {
     private Move loserMove;
     private IPlayer loserPlayer;
     private int roundNumber;
+    private Move humanMove;
 
 
     /**
@@ -26,13 +27,14 @@ public class Result {
      * @param type
      * @param roundNumber
      */
-    public Result(IPlayer winnerPlayer, Move winnerMove, IPlayer loserPlayer, Move loserMove, ResultType type, int roundNumber) {
+    public Result(IPlayer winnerPlayer, Move winnerMove, IPlayer loserPlayer, Move loserMove, ResultType type, int roundNumber,Move humanMove) {
         this.winnerPlayer = winnerPlayer;
         this.winnerMove = winnerMove;
         this.loserPlayer = loserPlayer;
         this.loserMove = loserMove;
         this.type = type;
         this.roundNumber = roundNumber;
+        this.humanMove = humanMove;
     }
 
     public Move getWinnerMove() {
@@ -57,5 +59,9 @@ public class Result {
 
     public ResultType getType() {
         return type;
+    }
+
+    public Move getHumanMove() {
+        return humanMove;
     }
 }
