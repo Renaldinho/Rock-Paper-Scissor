@@ -8,8 +8,8 @@ package rps.bll.game;
  */
 public enum Move {
     Rock("rock.png",0),
-    Paper("paper.png",1),
-    Scissor("scissor.png",2);
+    Paper("paperResized.png",1),
+    Scissor("resizedScissor.png",2);
 
     final String imageURL;
     final int matrixIndex;

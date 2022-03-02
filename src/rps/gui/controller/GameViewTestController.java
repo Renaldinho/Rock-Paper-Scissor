@@ -58,9 +58,9 @@ public class GameViewTestController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        rockImage.setImage(new Image("rock.png"));
-        paperImage.setImage(new Image("paper.png"));
-        scissorImage.setImage(new Image("scissor.png"));
+        rockImage.setImage(new Image(Move.Rock.getImageURL()));
+        paperImage.setImage(new Image(Move.Paper.getImageURL()));
+        scissorImage.setImage(new Image(Move.Scissor.getImageURL()));
     }
 
     @FXML
