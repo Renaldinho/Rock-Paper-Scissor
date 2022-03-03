@@ -69,7 +69,7 @@ public class GameViewController implements Initializable {
         vBox = new VBox(3);
 
         /**
-         * resized images
+         * resize images
          */
          /*Utility utility=new Utility();
         try {
@@ -156,30 +156,6 @@ public class GameViewController implements Initializable {
         Move botMove = (result.getLoserPlayer().getPlayerType()==PlayerType.AI) ?
                 result.getLoserMove() :
                 result.getWinnerMove();
-       // Thread thread = new Thread(()->System.out.println("aasba" ));
-
-
-        /*Thread firstThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                TranslateTransition tt = new TranslateTransition();
-                tt.setDuration(Duration.seconds(0.5));
-                tt.setNode(vBox);
-                tt.setToY(92);
-                tt.setCycleCount(4);
-                tt.autoReverseProperty().set(true);
-                tt.play();
-                try {
-                    tt.wait((long) tt.getDuration().toMillis());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
-
-
-
 
         switch (botMove){
 
@@ -188,7 +164,10 @@ public class GameViewController implements Initializable {
                 ttr.setDuration(Duration.seconds(0.2));
                 ttr.setNode(vBox);
                 ttr.setToY(161);
-                ttr.setCycleCount(3);
+                if(vBox.translateYProperty().get()==198)
+                    ttr.setCycleCount(3);
+                else
+                    ttr.setCycleCount(1);
                 ttr.autoReverseProperty().set(true);
                 ttr.play();
             }
@@ -196,7 +175,10 @@ public class GameViewController implements Initializable {
                 ttr.setDuration(Duration.seconds(0.2));
                 ttr.setNode(vBox);
                 ttr.setToY(92);
-                ttr.setCycleCount(3);
+                if(vBox.translateYProperty().get()==198)
+                    ttr.setCycleCount(3);
+                else
+                ttr.setCycleCount(1);
                 ttr.autoReverseProperty().set(true);
                 ttr.play();}
             case Paper -> {
@@ -204,7 +186,10 @@ public class GameViewController implements Initializable {
                 ttr.setDuration(Duration.seconds(0.2));
                 ttr.setNode(vBox);
                 ttr.setToY(126);
-                ttr.setCycleCount(3);
+                if(vBox.translateYProperty().get()==198)
+                    ttr.setCycleCount(3);
+                else
+                    ttr.setCycleCount(1);
                 ttr.autoReverseProperty().set(true);
                 ttr.play();
             }
