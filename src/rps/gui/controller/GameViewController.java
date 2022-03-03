@@ -27,6 +27,12 @@ public class GameViewController implements Initializable {
      private Label roundNumberLabel=new Label(),tieScoreLabel=new Label(),botScoreLabel=new Label(),humanScoreLabel= new Label(),scoreLabel= new Label("Score:  "),balanceLabel = new Label(balance+" available"),moneyWonLabel = new Label(),moneyLostLabel= new Label();
      private int moneyWon=0;
      private int moneyLost=0;
+    ImageView imageViewPaper = new ImageView(new Image("zebizebi.png"));
+    ImageView imageViewScissor = new ImageView(new Image("zebizebiversion2.png"));
+    ImageView imageViewRock = new ImageView(new Image("zebizebiversion3.png"));
+
+
+
     JFXButton jfxButton= new JFXButton("Bet");
 
     private final GameManager gameManager;
@@ -131,8 +137,8 @@ public class GameViewController implements Initializable {
 
 
         stackPane.getChildren().add(imageViewBackground);
-        balanceLabel.translateYProperty().set(-145);
-        balanceLabel.translateXProperty().set(-125);
+        balanceLabel.translateYProperty().set(-150);
+        balanceLabel.translateXProperty().set(-148);
         stackPane.getChildren().add(balanceLabel);
 
         ImageView money = new ImageView(new Image("flous.png"));
@@ -153,7 +159,6 @@ public class GameViewController implements Initializable {
         stackPane.getChildren().add(scoreLabel);
         stackPane.getChildren().add(balance);
 
-        ImageView imageViewPaper = new ImageView(new Image("zebizebi.png"));
         imageViewPaper.setOnMouseClicked(event -> {
             try {
                 handlePlayRound(Move.Paper);
@@ -161,7 +166,6 @@ public class GameViewController implements Initializable {
                 e.printStackTrace();
             }
         });
-        ImageView imageViewScissor = new ImageView(new Image("zebizebiversion2.png"));
         imageViewScissor.setOnMouseClicked(event -> {
             try {
                 handlePlayRound(Move.Scissor);
@@ -169,7 +173,6 @@ public class GameViewController implements Initializable {
                 e.printStackTrace();
             }
         });
-        ImageView imageViewRock = new ImageView(new Image("zebizebiversion3.png"));
         imageViewRock.setOnMouseClicked(event -> {
             try {
                 handlePlayRound(Move.Rock);
@@ -188,15 +191,26 @@ public class GameViewController implements Initializable {
 
         stackPane.getChildren().add(vbox);
 
-
     }
 
     private void gameOver() {
         ImageView gameOverImageView =new ImageView(new Image("zebizebi2022.png"));
         stackPane.getChildren().add(gameOverImageView);
         stackPane.setAlignment(gameOverImageView,Pos.BOTTOM_CENTER);
+        jfxButton.setOnMouseClicked(event0 -> newGame());
         jfxButton.setText("Play again");
+        
+        imageViewPaper.setOnMouseClicked(event -> {});
+        imageViewRock.setOnMouseClicked(event -> {});
+        imageViewScissor.setOnMouseClicked(event -> {});
     }
+
+    private void newGame() {
+        balance=250;
+        moneyLost=0;
+        moneyWon=0;
+    }
+
 
     private void handlePlayRound(Move playerMove) throws InterruptedException {
         Result result = gameManager.playRound(playerMove);
@@ -204,7 +218,7 @@ public class GameViewController implements Initializable {
         updateGameState(result);
     }
 
-    private void updateGameState(Result result) throws InterruptedException {
+    private void updateGameState(Result result)  {
         roundNumberLabel.setText(String.valueOf(result.getRoundNumber()));
 
         Move botMove = (result.getLoserPlayer().getPlayerType()==PlayerType.AI) ?
