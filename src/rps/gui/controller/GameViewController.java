@@ -1,5 +1,7 @@
 package rps.gui.controller;
+import com.jfoenix.controls.JFXButton;
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,8 +22,12 @@ import java.util.ResourceBundle;
 public class GameViewController implements Initializable {
     @FXML
     private StackPane stackPane;
+    private int balance = 250;
 
-    private Label roundNumberLabel,tieScoreLabel,botScoreLabel,humanScoreLabel;
+     private Label roundNumberLabel=new Label(),tieScoreLabel=new Label(),botScoreLabel=new Label(),humanScoreLabel= new Label(),scoreLabel= new Label("Score:  "),balanceLabel = new Label(balance+" available"),moneyWonLabel = new Label(),moneyLostLabel= new Label();
+     private int moneyWon=0;
+     private int moneyLost=0;
+    JFXButton jfxButton= new JFXButton("Bet");
 
     private final GameManager gameManager;
     private Player human;
@@ -39,16 +45,57 @@ public class GameViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        balanceLabel.getStyleClass().add("balance-label");
+
+
+        StackPane.setAlignment(scoreLabel,Pos.CENTER_LEFT);
+
         HBox scissorBox= new HBox();
         HBox questionMark= new HBox();
         HBox paperBox = new HBox();
         HBox rockBox = new HBox();
 
+        VBox labelVBox= new VBox();
+        HBox tieScore = new HBox();
+        HBox winScore = new HBox();
+        HBox lossScore = new HBox();
+
+        VBox balance = new VBox(30);
+        balance.translateXProperty().set(76);
+        balance.translateYProperty().set(14);
+        Label balanceLabel0 = new Label("Balance: ");
+        balanceLabel0.translateYProperty().set(40);
+        balanceLabel0.getStyleClass().add("balance-header");
+        balance.getChildren().add(moneyWonLabel);
+        moneyWonLabel.getStyleClass().add("money-won-label");
+        balance.getChildren().add(moneyLostLabel);
+        moneyLostLabel.getStyleClass().add("money-lost-label");
+
+        HBox roundBox= new HBox();
+        roundBox.getChildren().add(new Label("Round number: "));
+        roundBox.getChildren().add(roundNumberLabel);
+        roundBox.setTranslateY(150);
+
+        tieScore.getChildren().add(new Label("Tie(s): "));
+        tieScore.getChildren().add(tieScoreLabel);
+
+        winScore.getChildren().add(new Label("Win(s): "));
+        winScore.getChildren().add(humanScoreLabel);
+
+        lossScore.getChildren().add(new Label("Loss(es): "));
+        lossScore.getChildren().add(botScoreLabel);
+
+        labelVBox.getChildren().add(winScore);
+        labelVBox.getChildren().add(lossScore);
+        labelVBox.getChildren().add(tieScore);
+        labelVBox.setTranslateY(176);
+        labelVBox.setTranslateX(40);
+
 
         vBox = new VBox(3);
 
         /**
-         * resized images
+         * resize images
          */
          /*Utility utility=new Utility();
         try {
@@ -82,13 +129,54 @@ public class GameViewController implements Initializable {
         imageViewBackground.fitWidthProperty().bind(stackPane.widthProperty().multiply(1));
         imageViewBackground.fitHeightProperty().bind(stackPane.heightProperty().multiply(1));
 
+
         stackPane.getChildren().add(imageViewBackground);
+        balanceLabel.translateYProperty().set(-145);
+        balanceLabel.translateXProperty().set(-125);
+        stackPane.getChildren().add(balanceLabel);
+
+        ImageView money = new ImageView(new Image("flous.png"));
+        money.translateXProperty().set(-220);
+        money.translateYProperty().set(-124);
+
+        stackPane.getChildren().add(money);
+
+        stackPane.getChildren().add(balanceLabel0);
+        stackPane.setAlignment(balanceLabel0,Pos.TOP_LEFT);
+
+
+        jfxButton.translateYProperty().set(88);
+        stackPane.getChildren().add(jfxButton);
+
+        stackPane.getChildren().add(labelVBox);
+        stackPane.getChildren().add(roundBox);
+        stackPane.getChildren().add(scoreLabel);
+        stackPane.getChildren().add(balance);
+
         ImageView imageViewPaper = new ImageView(new Image("zebizebi.png"));
-        imageViewPaper.setOnMouseClicked(event -> handlePlayRound(Move.Paper));
+        imageViewPaper.setOnMouseClicked(event -> {
+            try {
+                handlePlayRound(Move.Paper);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         ImageView imageViewScissor = new ImageView(new Image("zebizebiversion2.png"));
-        imageViewScissor.setOnMouseClicked(event -> handlePlayRound(Move.Scissor));
+        imageViewScissor.setOnMouseClicked(event -> {
+            try {
+                handlePlayRound(Move.Scissor);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         ImageView imageViewRock = new ImageView(new Image("zebizebiversion3.png"));
-        imageViewRock.setOnMouseClicked(event -> handlePlayRound(Move.Rock));
+        imageViewRock.setOnMouseClicked(event -> {
+            try {
+                handlePlayRound(Move.Rock);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
 
 
         VBox vbox = new VBox(20);
@@ -99,46 +187,92 @@ public class GameViewController implements Initializable {
         vbox.translateYProperty().set(48);
 
         stackPane.getChildren().add(vbox);
+
+
     }
 
-    private void handlePlayRound(Move playerMove) {
+    private void gameOver() {
+        ImageView gameOverImageView =new ImageView(new Image("zebizebi2022.png"));
+        stackPane.getChildren().add(gameOverImageView);
+        stackPane.setAlignment(gameOverImageView,Pos.BOTTOM_CENTER);
+        jfxButton.setText("Play again");
+    }
+
+    private void handlePlayRound(Move playerMove) throws InterruptedException {
         Result result = gameManager.playRound(playerMove);
 
         updateGameState(result);
     }
 
-    private void updateGameState(Result result) {
-        //roundLabel.setText(String.valueOf(result.getRoundNumber()));
+    private void updateGameState(Result result) throws InterruptedException {
+        roundNumberLabel.setText(String.valueOf(result.getRoundNumber()));
 
         Move botMove = (result.getLoserPlayer().getPlayerType()==PlayerType.AI) ?
                 result.getLoserMove() :
                 result.getWinnerMove();
 
-        TranslateTransition ttr = new TranslateTransition();
-        ttr.setDuration(Duration.seconds(0.5));
-        ttr.setNode(vBox);
-        /*ttr.setToY(92);
-        ttr.setCycleCount(2);
-        ttr.autoReverseProperty().set(true);
-        ttr.play();*/
-
         switch (botMove){
 
-            case Rock -> ttr.setToY(161);
-            case Scissor -> ttr.setToY(92);
-            case Paper -> ttr.setToY(126);
+            case Rock -> {
+                TranslateTransition ttr = new TranslateTransition();
+                ttr.setDuration(Duration.seconds(0.2));
+                ttr.setNode(vBox);
+                ttr.setToY(161);
+                if(vBox.translateYProperty().get()==198)
+                    ttr.setCycleCount(3);
+                else
+                    ttr.setCycleCount(1);
+                ttr.autoReverseProperty().set(true);
+                ttr.play();
+            }
+            case Scissor ->{TranslateTransition ttr = new TranslateTransition();
+                ttr.setDuration(Duration.seconds(0.2));
+                ttr.setNode(vBox);
+                ttr.setToY(92);
+                if(vBox.translateYProperty().get()==198)
+                    ttr.setCycleCount(3);
+                else
+                ttr.setCycleCount(1);
+                ttr.autoReverseProperty().set(true);
+                ttr.play();}
+            case Paper -> {
+                TranslateTransition ttr = new TranslateTransition();
+                ttr.setDuration(Duration.seconds(0.2));
+                ttr.setNode(vBox);
+                ttr.setToY(126);
+                if(vBox.translateYProperty().get()==198)
+                    ttr.setCycleCount(3);
+                else
+                    ttr.setCycleCount(1);
+                ttr.autoReverseProperty().set(true);
+                ttr.play();
+            }
         }
-        ttr.play();
+        if (result.getType()== ResultType.Tie){
+            if (tieScoreLabel.getText().isEmpty())
+                tieScoreLabel.setText("1");
+            else
+            tieScoreLabel.setText(String.valueOf(Integer.parseInt(tieScoreLabel.getText())+1));}
+        else if (result.getWinnerPlayer().getPlayerType()==PlayerType.AI){
+            moneyLost+=50;
+            balance-=50;
+            moneyLostLabel.setText(moneyLost+" lost");
 
+            if (botScoreLabel.getText().isEmpty())
+                botScoreLabel.setText("1");
+            else
+            botScoreLabel.setText(String.valueOf(Integer.parseInt(botScoreLabel.getText())+1));}
+        else{
+            moneyWon+=50;
+            balance+=50;
+            moneyWonLabel.setText(moneyWon+ " won");
+            if (humanScoreLabel.getText().equals(""))
+                humanScoreLabel.setText("1");
+            else
+            humanScoreLabel.setText(String.valueOf(Integer.parseInt(humanScoreLabel.getText())+1));}
+        balanceLabel.setText(balance+" available");
 
-        /*if (result.getType()== ResultType.Tie)
-            tieScore.setText(String.valueOf(Integer.valueOf(tieScore.getText())+1));
-        else if (result.getWinnerPlayer().getPlayerType()==PlayerType.AI)
-            botScore.setText(String.valueOf(Integer.valueOf(botScore.getText())+1));
-        else
-            humanScore.setText(String.valueOf(Integer.valueOf(botScore.getText())+1));
-            */
-
-    }
-
+        if (balance<=0)
+            gameOver();
+}
 }
