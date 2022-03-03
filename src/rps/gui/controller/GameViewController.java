@@ -1,5 +1,7 @@
 package rps.gui.controller;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,6 +13,7 @@ import rps.bll.game.*;
 import rps.bll.player.Player;
 import rps.bll.player.PlayerType;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 /**
@@ -21,7 +24,7 @@ public class GameViewController implements Initializable {
     @FXML
     private StackPane stackPane;
 
-    private Label roundNumberLabel,tieScoreLabel,botScoreLabel,humanScoreLabel;
+     Label roundNumberLabel,tieScoreLabel=new Label(),botScoreLabel=new Label(),humanScoreLabel= new Label();
 
     private final GameManager gameManager;
     private Player human;
@@ -43,6 +46,24 @@ public class GameViewController implements Initializable {
         HBox questionMark= new HBox();
         HBox paperBox = new HBox();
         HBox rockBox = new HBox();
+
+        VBox labelVBox= new VBox();
+        HBox tieScore = new HBox();
+        HBox winScore = new HBox();
+        HBox lossScore = new HBox();
+
+        tieScore.getChildren().add(new Label("Tie(s)"));
+        tieScore.getChildren().add(tieScoreLabel);
+
+        winScore.getChildren().add(new Label("Win(s)"));
+        winScore.getChildren().add(humanScoreLabel);
+
+        lossScore.getChildren().add(new Label("Loss(es)"));
+        lossScore.getChildren().add(botScoreLabel);
+
+        labelVBox.getChildren().add(winScore);
+        labelVBox.getChildren().add(lossScore);
+        labelVBox.getChildren().add(tieScore);
 
 
         vBox = new VBox(3);
@@ -83,12 +104,32 @@ public class GameViewController implements Initializable {
         imageViewBackground.fitHeightProperty().bind(stackPane.heightProperty().multiply(1));
 
         stackPane.getChildren().add(imageViewBackground);
+        stackPane.getChildren().add(labelVBox);
+
         ImageView imageViewPaper = new ImageView(new Image("zebizebi.png"));
-        imageViewPaper.setOnMouseClicked(event -> handlePlayRound(Move.Paper));
+        imageViewPaper.setOnMouseClicked(event -> {
+            try {
+                handlePlayRound(Move.Paper);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         ImageView imageViewScissor = new ImageView(new Image("zebizebiversion2.png"));
-        imageViewScissor.setOnMouseClicked(event -> handlePlayRound(Move.Scissor));
+        imageViewScissor.setOnMouseClicked(event -> {
+            try {
+                handlePlayRound(Move.Scissor);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         ImageView imageViewRock = new ImageView(new Image("zebizebiversion3.png"));
-        imageViewRock.setOnMouseClicked(event -> handlePlayRound(Move.Rock));
+        imageViewRock.setOnMouseClicked(event -> {
+            try {
+                handlePlayRound(Move.Rock);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
 
 
         VBox vbox = new VBox(20);
@@ -99,28 +140,48 @@ public class GameViewController implements Initializable {
         vbox.translateYProperty().set(48);
 
         stackPane.getChildren().add(vbox);
+
+
     }
 
-    private void handlePlayRound(Move playerMove) {
+    private void handlePlayRound(Move playerMove) throws InterruptedException {
         Result result = gameManager.playRound(playerMove);
 
         updateGameState(result);
     }
 
-    private void updateGameState(Result result) {
+    private void updateGameState(Result result) throws InterruptedException {
         //roundLabel.setText(String.valueOf(result.getRoundNumber()));
 
         Move botMove = (result.getLoserPlayer().getPlayerType()==PlayerType.AI) ?
                 result.getLoserMove() :
                 result.getWinnerMove();
+       // Thread thread = new Thread(()->System.out.println("aasba" ));
+
+
+        /*Thread firstThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                TranslateTransition tt = new TranslateTransition();
+                tt.setDuration(Duration.seconds(0.5));
+                tt.setNode(vBox);
+                tt.setToY(92);
+                tt.setCycleCount(4);
+                tt.autoReverseProperty().set(true);
+                tt.play();
+                try {
+                    tt.wait((long) tt.getDuration().toMillis());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });*/
 
         TranslateTransition ttr = new TranslateTransition();
-        ttr.setDuration(Duration.seconds(0.5));
+        ttr.setDuration(Duration.seconds(0.3));
         ttr.setNode(vBox);
-        /*ttr.setToY(92);
-        ttr.setCycleCount(2);
-        ttr.autoReverseProperty().set(true);
-        ttr.play();*/
+
 
         switch (botMove){
 
@@ -128,17 +189,22 @@ public class GameViewController implements Initializable {
             case Scissor -> ttr.setToY(92);
             case Paper -> ttr.setToY(126);
         }
+
         ttr.play();
-
-
-        /*if (result.getType()== ResultType.Tie)
-            tieScore.setText(String.valueOf(Integer.valueOf(tieScore.getText())+1));
-        else if (result.getWinnerPlayer().getPlayerType()==PlayerType.AI)
-            botScore.setText(String.valueOf(Integer.valueOf(botScore.getText())+1));
-        else
-            humanScore.setText(String.valueOf(Integer.valueOf(botScore.getText())+1));
-            */
-
-    }
-
+        if (result.getType()== ResultType.Tie){
+            if (tieScoreLabel.getText().isEmpty())
+                tieScoreLabel.setText("1");
+            else
+            tieScoreLabel.setText(String.valueOf(Integer.parseInt(tieScoreLabel.getText())+1));}
+        else if (result.getWinnerPlayer().getPlayerType()==PlayerType.AI){
+            if (botScoreLabel.getText().isEmpty())
+                botScoreLabel.setText("1");
+            else
+            botScoreLabel.setText(String.valueOf(Integer.parseInt(botScoreLabel.getText())+1));}
+        else{
+            if (humanScoreLabel.getText().isEmpty())
+                humanScoreLabel.setText("1");
+            else
+            humanScoreLabel.setText(String.valueOf(Integer.parseInt(botScoreLabel.getText())+1));}
+}
 }

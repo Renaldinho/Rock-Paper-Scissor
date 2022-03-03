@@ -1,6 +1,3 @@
-.vbox{
-    -fx-background-color: green;
-}
-.hbox{
-    -fx-background-color: blue;
+.label{
+    -fx-background-color: white;
 }
