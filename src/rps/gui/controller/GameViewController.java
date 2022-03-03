@@ -1,6 +1,5 @@
 package rps.gui.controller;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.fxml.FXML;
@@ -13,7 +12,6 @@ import rps.bll.game.*;
 import rps.bll.player.Player;
 import rps.bll.player.PlayerType;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 /**
@@ -24,7 +22,10 @@ public class GameViewController implements Initializable {
     @FXML
     private StackPane stackPane;
 
-     Label roundNumberLabel,tieScoreLabel=new Label(),botScoreLabel=new Label(),humanScoreLabel= new Label();
+     private Label roundNumberLabel=new Label(),tieScoreLabel=new Label(),botScoreLabel=new Label(),humanScoreLabel= new Label(),scoreLabel= new Label("Score:  "),balanceLabel = new Label(),moneyWonLabel = new Label(),moneyLostLabel= new Label();
+     private int balance = 250;
+     private int moneyWon=0;
+     private int moneyLost=0;
 
     private final GameManager gameManager;
     private Player human;
@@ -42,6 +43,8 @@ public class GameViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        StackPane.setAlignment(scoreLabel,Pos.CENTER_LEFT);
+
         HBox scissorBox= new HBox();
         HBox questionMark= new HBox();
         HBox paperBox = new HBox();
@@ -52,18 +55,31 @@ public class GameViewController implements Initializable {
         HBox winScore = new HBox();
         HBox lossScore = new HBox();
 
-        tieScore.getChildren().add(new Label("Tie(s)"));
+        VBox balance = new VBox();
+        balance.getChildren().add(new Label("Balance"));
+        balance.getChildren().add(balanceLabel);
+        balance.getChildren().add(moneyWonLabel);
+        balance.getChildren().add(moneyLostLabel);
+
+        HBox roundBox= new HBox();
+        roundBox.getChildren().add(new Label("Round number: "));
+        roundBox.getChildren().add(roundNumberLabel);
+        roundBox.setTranslateY(150);
+
+        tieScore.getChildren().add(new Label("Tie(s): "));
         tieScore.getChildren().add(tieScoreLabel);
 
-        winScore.getChildren().add(new Label("Win(s)"));
+        winScore.getChildren().add(new Label("Win(s): "));
         winScore.getChildren().add(humanScoreLabel);
 
-        lossScore.getChildren().add(new Label("Loss(es)"));
+        lossScore.getChildren().add(new Label("Loss(es): "));
         lossScore.getChildren().add(botScoreLabel);
 
         labelVBox.getChildren().add(winScore);
         labelVBox.getChildren().add(lossScore);
         labelVBox.getChildren().add(tieScore);
+        labelVBox.setTranslateY(176);
+        labelVBox.setTranslateX(40);
 
 
         vBox = new VBox(3);
@@ -105,6 +121,9 @@ public class GameViewController implements Initializable {
 
         stackPane.getChildren().add(imageViewBackground);
         stackPane.getChildren().add(labelVBox);
+        stackPane.getChildren().add(roundBox);
+        stackPane.getChildren().add(scoreLabel);
+        stackPane.getChildren().add(balance);
 
         ImageView imageViewPaper = new ImageView(new Image("zebizebi.png"));
         imageViewPaper.setOnMouseClicked(event -> {
@@ -151,7 +170,7 @@ public class GameViewController implements Initializable {
     }
 
     private void updateGameState(Result result) throws InterruptedException {
-        //roundLabel.setText(String.valueOf(result.getRoundNumber()));
+        roundNumberLabel.setText(String.valueOf(result.getRoundNumber()));
 
         Move botMove = (result.getLoserPlayer().getPlayerType()==PlayerType.AI) ?
                 result.getLoserMove() :
@@ -200,14 +219,22 @@ public class GameViewController implements Initializable {
             else
             tieScoreLabel.setText(String.valueOf(Integer.parseInt(tieScoreLabel.getText())+1));}
         else if (result.getWinnerPlayer().getPlayerType()==PlayerType.AI){
+            moneyLost+=50;
+            balance-=50;
+            moneyLostLabel.setText(String.valueOf(moneyLost));
+
             if (botScoreLabel.getText().isEmpty())
                 botScoreLabel.setText("1");
             else
             botScoreLabel.setText(String.valueOf(Integer.parseInt(botScoreLabel.getText())+1));}
         else{
+            moneyWon+=50;
+            balance+=50;
+            moneyWonLabel.setText(String.valueOf(moneyWon));
             if (humanScoreLabel.getText().isEmpty())
                 humanScoreLabel.setText("1");
             else
             humanScoreLabel.setText(String.valueOf(Integer.parseInt(botScoreLabel.getText())+1));}
+        balanceLabel.setText(String.valueOf(balance));
 }
 }
