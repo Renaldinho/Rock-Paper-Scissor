@@ -178,19 +178,37 @@ public class GameViewController implements Initializable {
             }
         });*/
 
-        TranslateTransition ttr = new TranslateTransition();
-        ttr.setDuration(Duration.seconds(0.3));
-        ttr.setNode(vBox);
+
 
 
         switch (botMove){
 
-            case Rock -> ttr.setToY(161);
-            case Scissor -> ttr.setToY(92);
-            case Paper -> ttr.setToY(126);
+            case Rock -> {
+                TranslateTransition ttr = new TranslateTransition();
+                ttr.setDuration(Duration.seconds(0.2));
+                ttr.setNode(vBox);
+                ttr.setToY(161);
+                ttr.setCycleCount(3);
+                ttr.autoReverseProperty().set(true);
+                ttr.play();
+            }
+            case Scissor ->{TranslateTransition ttr = new TranslateTransition();
+                ttr.setDuration(Duration.seconds(0.2));
+                ttr.setNode(vBox);
+                ttr.setToY(92);
+                ttr.setCycleCount(3);
+                ttr.autoReverseProperty().set(true);
+                ttr.play();}
+            case Paper -> {
+                TranslateTransition ttr = new TranslateTransition();
+                ttr.setDuration(Duration.seconds(0.2));
+                ttr.setNode(vBox);
+                ttr.setToY(126);
+                ttr.setCycleCount(3);
+                ttr.autoReverseProperty().set(true);
+                ttr.play();
+            }
         }
-
-        ttr.play();
         if (result.getType()== ResultType.Tie){
             if (tieScoreLabel.getText().isEmpty())
                 tieScoreLabel.setText("1");
