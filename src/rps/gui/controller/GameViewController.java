@@ -1,5 +1,4 @@
 package rps.gui.controller;
-import com.jfoenix.controls.JFXButton;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -24,34 +23,39 @@ public class GameViewController implements Initializable {
     private StackPane stackPane;
     private int balance = 250;
 
-     private Label roundNumberLabel=new Label(),tieScoreLabel=new Label(),botScoreLabel=new Label(),humanScoreLabel= new Label(),scoreLabel= new Label("Score:  "),balanceLabel = new Label(balance+" available"),moneyWonLabel = new Label(),moneyLostLabel= new Label();
-     private int moneyWon=0;
-     private int moneyLost=0;
+    private final Label roundNumberLabel=new Label();
+    private final Label tieScoreLabel=new Label();
+    private final Label botScoreLabel=new Label();
+    private final Label humanScoreLabel= new Label();
+    private final Label scoreLabel= new Label("Score:  ");
+    private final Label balanceLabel = new Label(balance+" available");
+    private final Label moneyWonLabel = new Label();
+    private final Label moneyLostLabel= new Label();
+    private int moneyWon=0;
+    private int moneyLost=0;
     ImageView imageViewPaper = new ImageView(new Image("zebizebi.png"));
     ImageView imageViewScissor = new ImageView(new Image("zebizebiversion2.png"));
     ImageView imageViewRock = new ImageView(new Image("zebizebiversion3.png"));
 
 
 
-    JFXButton jfxButton= new JFXButton("Bet");
 
     private final GameManager gameManager;
-    private Player human;
     ImageView imageViewBackground = new ImageView(new Image("aasba.png"));
 
-    private Player bot;
     VBox vBox ;
 
     public GameViewController(){
-        human = new Player("Renars", PlayerType.Human);
-        bot = new Player("Bot",PlayerType.AI);
-        gameManager = new GameManager(human,bot);
+        Player human = new Player("Renars", PlayerType.Human);
+        Player bot = new Player("Bot", PlayerType.AI);
+        gameManager = new GameManager(human, bot);
 
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         balanceLabel.getStyleClass().add("balance-label");
+        scoreLabel.getStyleClass().add("scoreLabel");
 
 
         StackPane.setAlignment(scoreLabel,Pos.CENTER_LEFT);
@@ -78,24 +82,37 @@ public class GameViewController implements Initializable {
         moneyLostLabel.getStyleClass().add("money-lost-label");
 
         HBox roundBox= new HBox();
-        roundBox.getChildren().add(new Label("Round number: "));
+        Label roundNumberHeader = new Label("Round number: ");
+        roundNumberHeader.getStyleClass().add("roundNumberHeader");
+        roundBox.getChildren().add(roundNumberHeader);
+        roundNumberLabel.getStyleClass().add("RoundNumberLabel");
         roundBox.getChildren().add(roundNumberLabel);
         roundBox.setTranslateY(150);
 
-        tieScore.getChildren().add(new Label("Tie(s): "));
+
+        Label tieScoreLabelHeader = new Label("Tie(s): ");
+        tieScoreLabelHeader.getStyleClass().add("tieScoreLabelHeader");
+        tieScore.getChildren().add(tieScoreLabelHeader);
+        tieScoreLabel.getStyleClass().add("tieScoreLabel");
         tieScore.getChildren().add(tieScoreLabel);
 
-        winScore.getChildren().add(new Label("Win(s): "));
+        Label winScoreLabelHeader = new Label("Win(s): ");
+        winScoreLabelHeader.getStyleClass().add("winScoreLabelHeader");
+        winScore.getChildren().add(winScoreLabelHeader);
+        humanScoreLabel.getStyleClass().add("humanScoreLabel");
         winScore.getChildren().add(humanScoreLabel);
 
-        lossScore.getChildren().add(new Label("Loss(es): "));
+        Label lossScoreLabelHeader=new Label("Loss(es): ");
+        lossScoreLabelHeader.getStyleClass().add("lossScoreLabelHeader");
+        lossScore.getChildren().add(lossScoreLabelHeader);
+        botScoreLabel.getStyleClass().add("botScoreLabel");
         lossScore.getChildren().add(botScoreLabel);
 
         labelVBox.getChildren().add(winScore);
-        labelVBox.getChildren().add(lossScore);
         labelVBox.getChildren().add(tieScore);
-        labelVBox.setTranslateY(176);
-        labelVBox.setTranslateX(40);
+        labelVBox.getChildren().add(lossScore);
+        labelVBox.setTranslateY(172);
+        labelVBox.setTranslateX(50);
 
 
         vBox = new VBox(3);
@@ -150,10 +167,6 @@ public class GameViewController implements Initializable {
         stackPane.getChildren().add(balanceLabel0);
         stackPane.setAlignment(balanceLabel0,Pos.TOP_LEFT);
 
-
-        jfxButton.translateYProperty().set(88);
-        stackPane.getChildren().add(jfxButton);
-
         stackPane.getChildren().add(labelVBox);
         stackPane.getChildren().add(roundBox);
         stackPane.getChildren().add(scoreLabel);
@@ -197,19 +210,12 @@ public class GameViewController implements Initializable {
         ImageView gameOverImageView =new ImageView(new Image("zebizebi2022.png"));
         stackPane.getChildren().add(gameOverImageView);
         stackPane.setAlignment(gameOverImageView,Pos.BOTTOM_CENTER);
-        jfxButton.setOnMouseClicked(event0 -> newGame());
-        jfxButton.setText("Play again");
-        
+
         imageViewPaper.setOnMouseClicked(event -> {});
         imageViewRock.setOnMouseClicked(event -> {});
         imageViewScissor.setOnMouseClicked(event -> {});
     }
 
-    private void newGame() {
-        balance=250;
-        moneyLost=0;
-        moneyWon=0;
-    }
 
 
     private void handlePlayRound(Move playerMove) throws InterruptedException {
