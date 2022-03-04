@@ -1,0 +1,20 @@
+.balance-header{
+    -fx-text-fill: #1c2b34;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+.balance-label{
+    -fx-text-fill: #6d7483;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+.money-lost-label{
+    -fx-text-fill: #ff2a43;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+.money-won-label{
+    -fx-text-fill: #007875;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
