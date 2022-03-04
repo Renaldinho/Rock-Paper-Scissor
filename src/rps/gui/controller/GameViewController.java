@@ -35,7 +35,7 @@ public class GameViewController implements Initializable {
     private int moneyLost=0;
     private final ImageView imageViewPaper = new ImageView(new Image("resiedhandclipart.png"));
    private final ImageView imageViewScissor = new ImageView(new Image("resizedScissors0.png"));
-    private final ImageView imageViewRock = new ImageView(new Image("zebizebiversion3.png"));
+    private final ImageView imageViewRock = new ImageView(new Image("rockresized.png"));
 
 
 
