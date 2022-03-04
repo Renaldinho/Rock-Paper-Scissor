@@ -52,7 +52,6 @@ public class Player implements IPlayer {
         ArrayList<Result> results = (ArrayList<Result>) state.getHistoricResults();
         if (results.size()<5)
             return getRandomMove();
-
         return MarkovChain.getRandomProbable();
     }
 
