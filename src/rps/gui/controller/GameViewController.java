@@ -33,15 +33,15 @@ public class GameViewController implements Initializable {
     private final Label moneyLostLabel= new Label();
     private int moneyWon=0;
     private int moneyLost=0;
-    ImageView imageViewPaper = new ImageView(new Image("zebizebi.png"));
-    ImageView imageViewScissor = new ImageView(new Image("zebizebiversion2.png"));
-    ImageView imageViewRock = new ImageView(new Image("zebizebiversion3.png"));
+    private final ImageView imageViewPaper = new ImageView(new Image("resiedhandclipart.png"));
+   private final ImageView imageViewScissor = new ImageView(new Image("resizedScissors0.png"));
+    private final ImageView imageViewRock = new ImageView(new Image("zebizebiversion3.png"));
 
 
 
 
     private final GameManager gameManager;
-    ImageView imageViewBackground = new ImageView(new Image("aasba.png"));
+    ImageView imageViewBackground = new ImageView(new Image("background0.png"));
 
     VBox vBox ;
 
@@ -55,8 +55,7 @@ public class GameViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         balanceLabel.getStyleClass().add("balance-label");
-        scoreLabel.getStyleClass().add("scoreLabel");
-
+        scoreLabel.getStyleClass().add("score-label");
 
         StackPane.setAlignment(scoreLabel,Pos.CENTER_LEFT);
 
@@ -77,35 +76,35 @@ public class GameViewController implements Initializable {
         balanceLabel0.translateYProperty().set(40);
         balanceLabel0.getStyleClass().add("balance-header");
         balance.getChildren().add(moneyWonLabel);
-        moneyWonLabel.getStyleClass().add("money-won-label");
+        moneyWonLabel.getStyleClass().add("win-label");
         balance.getChildren().add(moneyLostLabel);
-        moneyLostLabel.getStyleClass().add("money-lost-label");
+        moneyLostLabel.getStyleClass().add("loss-label");
 
         HBox roundBox= new HBox();
         Label roundNumberHeader = new Label("Round number: ");
-        roundNumberHeader.getStyleClass().add("roundNumberHeader");
+        roundNumberHeader.getStyleClass().add("round-number-label");
         roundBox.getChildren().add(roundNumberHeader);
-        roundNumberLabel.getStyleClass().add("RoundNumberLabel");
+        roundNumberLabel.getStyleClass().add("round-number-label");
         roundBox.getChildren().add(roundNumberLabel);
         roundBox.setTranslateY(150);
 
 
         Label tieScoreLabelHeader = new Label("Tie(s): ");
-        tieScoreLabelHeader.getStyleClass().add("tieScoreLabelHeader");
+        tieScoreLabelHeader.getStyleClass().add("tie-label");
         tieScore.getChildren().add(tieScoreLabelHeader);
-        tieScoreLabel.getStyleClass().add("tieScoreLabel");
+        tieScoreLabel.getStyleClass().add("tie-label");
         tieScore.getChildren().add(tieScoreLabel);
 
         Label winScoreLabelHeader = new Label("Win(s): ");
-        winScoreLabelHeader.getStyleClass().add("winScoreLabelHeader");
+        winScoreLabelHeader.getStyleClass().add("win-label");
         winScore.getChildren().add(winScoreLabelHeader);
-        humanScoreLabel.getStyleClass().add("humanScoreLabel");
+        humanScoreLabel.getStyleClass().add("win-label");
         winScore.getChildren().add(humanScoreLabel);
 
         Label lossScoreLabelHeader=new Label("Loss(es): ");
-        lossScoreLabelHeader.getStyleClass().add("lossScoreLabelHeader");
+        lossScoreLabelHeader.getStyleClass().add("loss-label");
         lossScore.getChildren().add(lossScoreLabelHeader);
-        botScoreLabel.getStyleClass().add("botScoreLabel");
+        botScoreLabel.getStyleClass().add("loss-label");
         lossScore.getChildren().add(botScoreLabel);
 
         labelVBox.getChildren().add(winScore);
@@ -129,10 +128,10 @@ public class GameViewController implements Initializable {
 
 
         for (int j =1;j<=3;j++) {
-                questionMark.getChildren().add(new ImageView(new Image("qm00.png")));
-                scissorBox.getChildren().add(new ImageView(new Image("jiboujibouscissor.png")));
-                paperBox.getChildren().add(new ImageView(new Image("zebizebi111.png")));
-                rockBox.getChildren().add(new ImageView(new Image("jibijibi.png")));
+                questionMark.getChildren().add(new ImageView(new Image("qm.png")));
+                scissorBox.getChildren().add(new ImageView(new Image("resizedScissor.png")));
+                paperBox.getChildren().add(new ImageView(new Image("resizedHandClipArt.png")));
+                rockBox.getChildren().add(new ImageView(new Image("resizedRock.png")));
             }
 
         vBox.getChildren().add(questionMark);
@@ -158,14 +157,14 @@ public class GameViewController implements Initializable {
         balanceLabel.translateXProperty().set(-148);
         stackPane.getChildren().add(balanceLabel);
 
-        ImageView money = new ImageView(new Image("flous.png"));
+        ImageView money = new ImageView(new Image("money.png"));
         money.translateXProperty().set(-220);
         money.translateYProperty().set(-124);
 
         stackPane.getChildren().add(money);
 
         stackPane.getChildren().add(balanceLabel0);
-        stackPane.setAlignment(balanceLabel0,Pos.TOP_LEFT);
+        StackPane.setAlignment(balanceLabel0,Pos.TOP_LEFT);
 
         stackPane.getChildren().add(labelVBox);
         stackPane.getChildren().add(roundBox);
@@ -207,9 +206,9 @@ public class GameViewController implements Initializable {
     }
 
     private void gameOver() {
-        ImageView gameOverImageView =new ImageView(new Image("zebizebi2022.png"));
+        ImageView gameOverImageView =new ImageView(new Image("resizedGameOver.png"));
         stackPane.getChildren().add(gameOverImageView);
-        stackPane.setAlignment(gameOverImageView,Pos.BOTTOM_CENTER);
+        StackPane.setAlignment(gameOverImageView,Pos.BOTTOM_CENTER);
 
         imageViewPaper.setOnMouseClicked(event -> {});
         imageViewRock.setOnMouseClicked(event -> {});
